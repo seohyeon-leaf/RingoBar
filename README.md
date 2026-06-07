@@ -41,7 +41,7 @@ macOS 메뉴바 전용 포모도로 타이머
 ## 빌드
 
 ```bash
-git clone https://github.com/seohyeon-leaf/RingoBar.git
+git clone https://github.com/1seoe/RingoBar.git
 cd RingoBar
 open RingoBar/RingoBar.xcodeproj
 ```
