@@ -4,7 +4,7 @@ macOS 메뉴바 전용 포모도로 타이머
 
 ![Swift](https://img.shields.io/badge/Swift-5.9-orange)
 ![macOS](https://img.shields.io/badge/macOS-13%2B-blue)
-![License](https://img.shields.io/badge/license-Private-lightgrey)
+![License](https://img.shields.io/badge/license-MIT-green)
 
 ---
 
