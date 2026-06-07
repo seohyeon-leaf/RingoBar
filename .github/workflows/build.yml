@@ -38,9 +38,10 @@ jobs:
           APP_PATH="build/Build/Products/Release/RingoBar.app"
           DMG_NAME="RingoBar.dmg"
 
-          # 임시 DMG 폴더 구성
+          # 임시 DMG 폴더 구성 (Applications 심볼릭 링크 포함)
           mkdir -p dmg_staging
           cp -R "$APP_PATH" dmg_staging/
+          ln -s /Applications dmg_staging/Applications
 
           # DMG 생성
           hdiutil create \
