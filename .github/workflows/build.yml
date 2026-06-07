@@ -1,0 +1,75 @@
+name: Build & Package RingoBar
+
+on:
+  push:
+    branches: [ main ]
+    tags:
+      - 'v*'          # v1.0.0 같은 태그 푸시 시 릴리즈 생성
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - name: 코드 체크아웃
+        uses: actions/checkout@v4
+
+      - name: Xcode 버전 확인
+        run: xcodebuild -version
+
+      - name: 앱 빌드 (서명 없음)
+        run: |
+          xcodebuild \
+            -project RingoBar/RingoBar.xcodeproj \
+            -scheme RingoBar \
+            -configuration Release \
+            -derivedDataPath build \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            build
+
+      - name: DMG 패키징
+        run: |
+          APP_PATH="build/Build/Products/Release/RingoBar.app"
+          DMG_NAME="RingoBar.dmg"
+
+          # 임시 DMG 폴더 구성
+          mkdir -p dmg_staging
+          cp -R "$APP_PATH" dmg_staging/
+
+          # DMG 생성
+          hdiutil create \
+            -volname "RingoBar" \
+            -srcfolder dmg_staging \
+            -ov \
+            -format UDZO \
+            "$DMG_NAME"
+
+          echo "DMG 생성 완료: $DMG_NAME"
+
+      - name: 빌드 아티팩트 업로드 (PR / 일반 푸시)
+        if: github.ref_type != 'tag'
+        uses: actions/upload-artifact@v4
+        with:
+          name: RingoBar-${{ github.sha }}
+          path: RingoBar.dmg
+          retention-days: 14
+
+      - name: GitHub Release 생성 (태그 푸시 시)
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: RingoBar.dmg
+          body: |
+            ## RingoBar ${{ github.ref_name }}
+
+            ### 설치 방법
+            1. `RingoBar.dmg` 다운로드
+            2. DMG 열고 RingoBar.app을 Applications 폴더로 드래그
+            3. 처음 실행 시 보안 경고가 뜨면:
+               **시스템 설정 → 개인 정보 보호 및 보안 → "확인 없이 열기"** 클릭
+
+            > ⚠️ Apple Developer 서명 없이 배포된 버전입니다.
