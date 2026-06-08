@@ -101,26 +101,16 @@ struct MenuBarView: View {
 
     @ViewBuilder
     private var settingsButton: some View {
-        if #available(macOS 14, *) {
-            SettingsLink {
-                Text("설정")
-                    .font(.system(size: 12))
-                    .foregroundStyle(.secondary)
+        Button("설정") {
+            NSApp.activate(ignoringOtherApps: true)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
             }
-            .buttonStyle(.plain)
-            .padding(.vertical, 8)
-        } else {
-            Button("설정") {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
-                    NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
-                    NSApp.activate(ignoringOtherApps: true)
-                }
-            }
-            .buttonStyle(.plain)
-            .font(.system(size: 12))
-            .foregroundStyle(.secondary)
-            .padding(.vertical, 8)
         }
+        .buttonStyle(.plain)
+        .font(.system(size: 12))
+        .foregroundStyle(.secondary)
+        .padding(.vertical, 8)
     }
 
     // MARK: - 피드백 버튼
