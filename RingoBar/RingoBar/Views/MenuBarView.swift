@@ -101,15 +101,25 @@ struct MenuBarView: View {
 
     @ViewBuilder
     private var settingsButton: some View {
-        Button("설정") {
-            NSApp.activate(ignoringOtherApps: true)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-                NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
+        Group {
+            if #available(macOS 14, *) {
+                SettingsLink {
+                    Text("설정")
+                        .font(.system(size: 12))
+                        .foregroundStyle(.secondary)
+                }
+            } else {
+                Button("설정") {
+                    NSApp.activate(ignoringOtherApps: true)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                        NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
+                    }
+                }
+                .font(.system(size: 12))
+                .foregroundStyle(.secondary)
             }
         }
         .buttonStyle(.plain)
-        .font(.system(size: 12))
-        .foregroundStyle(.secondary)
         .padding(.vertical, 8)
     }
 

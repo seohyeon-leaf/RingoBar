@@ -18,10 +18,21 @@ struct MenuBarIconView: View {
     // MARK: - 앱 아이콘 (공통)
 
     private var appIcon: some View {
-        Image("AppIcon")
-            .resizable()
-            .interpolation(.high)
-            .frame(width: 18, height: 18)
+        Image(nsImage: scaledAppIcon(size: 32))
+    }
+
+    private func scaledAppIcon(size: CGFloat) -> NSImage {
+        let newSize = NSSize(width: size, height: size)
+        let scaled = NSImage(size: newSize)
+        scaled.lockFocus()
+        NSApp.applicationIconImage.draw(
+            in: NSRect(origin: .zero, size: newSize),
+            from: .zero,
+            operation: .copy,
+            fraction: 1.0
+        )
+        scaled.unlockFocus()
+        return scaled
     }
 
     // MARK: - 텍스트 모드: 잔여 시간
