@@ -8,6 +8,15 @@ macOS 메뉴바 전용 포모도로 타이머
 
 ---
 
+## 미리보기
+
+<p align="center">
+  <img src="Ringobar_Screenshot1.png" width="260" alt="텍스트 모드">
+  <img src="Ringobar_Screenshot2.png" width="260" alt="원형 프로그레스 모드 + 설정">
+</p>
+
+---
+
 ## 기능
 
 - **메뉴바 상주** — Dock 아이콘 없이 메뉴바에서 바로 사용
