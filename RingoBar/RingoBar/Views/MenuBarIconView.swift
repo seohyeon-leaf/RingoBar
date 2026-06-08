@@ -15,40 +15,34 @@ struct MenuBarIconView: View {
         }
     }
 
+    // MARK: - 앱 아이콘 (공통)
+
+    private var appIcon: some View {
+        Image("AppIcon")
+            .resizable()
+            .interpolation(.high)
+            .frame(width: 18, height: 18)
+    }
+
     // MARK: - 텍스트 모드: 잔여 시간
 
     private var textModeView: some View {
-        Group {
-            if engine.state == .idle {
-                Image(systemName: "timer")
-                    .symbolRenderingMode(.hierarchical)
-                    .foregroundStyle(Color.secondary)
-            } else {
+        HStack(spacing: 4) {
+            appIcon
+            if engine.state != .idle {
                 Text(TimeFormatter.formatCompact(seconds: engine.remainingSeconds))
                     .font(.system(size: 12, weight: .medium, design: .monospaced))
                     .foregroundStyle(engine.state.accentColor)
             }
         }
-        .frame(minWidth: 44)
+        .frame(minWidth: 36)
     }
 
-    // MARK: - 원형 모드: 상태 색상 점 아이콘
+    // MARK: - 원형 모드: 앱 아이콘 + 시간
 
     private var circularModeView: some View {
         HStack(spacing: 4) {
-            // 상태 색상 원 (앱 아이콘 느낌)
-            ZStack {
-                Circle()
-                    .fill(engine.state == .idle
-                          ? Color.secondary.opacity(0.2)
-                          : engine.state.accentColor.opacity(0.18))
-                    .frame(width: 18, height: 18)
-                Circle()
-                    .fill(engine.state == .idle
-                          ? Color.secondary
-                          : engine.state.accentColor)
-                    .frame(width: 9, height: 9)
-            }
+            appIcon
 
             // 대기 중이 아닐 때만 시간 표시
             if engine.state != .idle {
