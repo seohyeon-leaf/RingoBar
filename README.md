@@ -29,13 +29,17 @@ macOS 메뉴바 전용 포모도로 타이머
 
 ## 설치 방법
 
-1. [Actions](../../actions) 탭에서 최신 성공 빌드 클릭
-2. **Artifacts** 에서 `RingoBar-xxxxx.dmg` 다운로드
-3. DMG 열고 `RingoBar.app` 을 **Applications** 폴더로 드래그
-4. 처음 실행 시 보안 경고가 뜨면:
-   - **시스템 설정 → 개인 정보 보호 및 보안 → "확인 없이 열기"** 클릭
+1. [Releases](../../releases) 탭에서 최신 버전의 `RingoBar.dmg` 다운로드
+2. DMG 열고 `RingoBar.app` 을 **Applications** 폴더로 드래그
+3. 처음 실행 시 **"손상되었습니다"** 경고가 뜨면 터미널에서 아래 명령어 실행:
 
-> ⚠️ Apple Developer 서명 없이 배포된 버전입니다.
+```bash
+sudo xattr -rd com.apple.quarantine /Applications/RingoBar.app
+```
+
+4. 이후 **시스템 설정 → 개인 정보 보호 및 보안 → "그래도 열기"** 클릭
+
+> ⚠️ Apple Developer 서명 없이 배포된 버전입니다. 위 절차는 macOS의 보안 정책 때문에 필요합니다.
 
 ## 불편한 점이 있다면
 
