@@ -33,6 +33,11 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             build
 
+      - name: Ad-hoc 서명 (Gatekeeper 경고 정상화)
+        run: |
+          codesign --force --deep --sign - \
+            "build/Build/Products/Release/RingoBar.app"
+
       - name: DMG 패키징
         run: |
           APP_PATH="build/Build/Products/Release/RingoBar.app"
